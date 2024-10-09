@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Запрошення на Весілля</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+        html {
+            background: fixed;
+            background-image: linear-gradient(to right bottom, #e1b0cc, #e3a8c9, #e49fc6, #e696c3, #e78dc0, #de93d2, #d19ae2, #c0a2f0, #96baff, #73cdff, #6fdcf6, #8ae7e4);
+        }
+        
+        body {
+            font-family: "Nunito", sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            color: rgb(255, 204, 0);
+            max-width: 800px;
+            margin: 46px auto;
+            padding: 20px;
+            background-color: rgba(0, 38, 255, 0.295);
+            border-radius: 30px;
+        }
+        
+        .header {
+            text-align: center;
+        }
+        
+        .content {
+            margin: 20px 0;
+        }
+        
+        .section {
+            margin-bottom: 20px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .countdown {
+            text-align: center;
+            font-size: 1.5em;
+            margin-top: 20px;
+            color: #ff5733;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .inpPlace {
+            text-align: center;
+            margin-top: 10px;
+            width: 300px;
+            height: 30px;
+            border-radius: 10px;
+            border: none;
+            text-decoration: none;
+        }
+        
+        .sendBtn {
+            background-color: #cecc4e;
+            text-align: center;
+            width: 150px;
+            height: 30px;
+            border-radius: 50px;
+            transition: width 0.3s ease-in-out, filter 0.3s ease-in-out;
+            border: none;
+            text-decoration: none;
+            margin-top: 30px;
+        }
+        
+        .sendBtn:hover {
+            width: 170px;
+            background-color: #43d367;
+        }
+        
+        label {
+            border: inherit;
+        }
+        
+        .showall {
+            text-decoration: none;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Запрошення на весілля</h1>
+            <p>Марічка та Антон</p>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <h2>Дорогі друзі!</h2>
+                <p>З великою радістю запрошуємо вас на наше весілля, яке відбудеться <strong>15 жовтня 2024 року</strong>. Святкування проходитиме за адресою: <span class="highlight">вул. Весільна, 5, Київ</span>.</p>
+                <p>Початок урочистостей запланований на <span class="highlight">15:00</span>, після чого ми разом будемо святкувати до пізньої ночі.</p>
+                <p>Будемо раді бачити вас на нашому святі, щоб розділити ці щасливі моменти разом!</p>
+            </div>
+            <div class="footer">
+                <p>З любов'ю, <strong>Марічка та Антон</strong></p>
+            </div>
+        </div>
+
+        <div class="section rsvp-form">
+            <h3>Підтвердження присутності</h3>
+
+            <form th:action="@{/guests/addGuest}" method="post">
+                <input type="text" class="inpPlace" name="name" placeholder="Ваше ім'я" required>
+                <input type="text" class="inpPlace" name="secondName" placeholder="Ваше прізвище" required><br>
+
+                <label>Чи можемо ми очікувати вашої присутності?</label><br>
+                <select name="presence" required>
+                <option value="Так, я прийду!">Так, я прийду!</option>
+                <option value="На жаль, я не зможу прийти.">На жаль, я не зможу прийти.</option>
+            </select><br>
+
+                <label>Чи плануєте ви брати додаткового гостя?</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="guest" value="Я буду один"> Я буду один</label>
+                    <label><input type="checkbox" name="guest" value="Я буду з гостем"> Я буду з гостем</label>
+                    <label><input type="checkbox" name="guest" value="Я буду з кількома гостями"> Я буду з кількома гостями</label>
+                </div>
+
+                <label class="alco">Будь ласка, оберіть ваш улюблений напій для весільного прийому *</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="beverage" value="Червоне вино"> Червоне вино</label>
+                    <label><input type="checkbox" name="beverage" value="Біле вино"> Біле вино</label>
+                    <label><input type="checkbox" name="beverage" value="Шампанське"> Шампанське</label>
+                    <label><input type="checkbox" name="beverage" value="Горілка"> Горілка</label>
+                    <label><input type="checkbox" name="beverage" value="Віскі"> Віскі</label>
+                    <label><input type="checkbox" name="beverage" value="Без алкоголю"> Без алкоголю</label>
+                </div>
+
+                <button class="sendBtn" type="submit">Відправити</button>
+
+            </form>
+
+        </div>
+        <div class="countdown" id="countdown">
+            До заходу залишилось: <span id="time">00:00:00</span>
+        </div>
+
+        <div class="footer">
+            <p>Контактний телефон: +380 67 123 4567</p>
+            <p>Email: ivan_maria@example.com</p>
+        </div>
+        <div>
+            <a href="/guests/list" class="showall">All guests</a>
+        </div>
+    </div>
+    <script>
+        const weddingDate = new Date("2024-10-20T15:00:00").getTime();
+        const countdownElement = document.getElementById("time");
+
+        const countdownInterval = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            // Розрахунок годин, хвилин та секунд
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Відображення зворотного відліку
+            countdownElement.innerHTML = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+            // Якщо час вийшов
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                countdownElement.innerHTML = "Час вийшов!";
+            }
+        }, 1000);
+    </script>
+</body>
+
+</html>
