@@ -1,0 +1,63 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build-and-lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java-version: [17]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK ${{ matrix.java-version }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java-version }}
+
+    # Паралельний запуск двох кроків
+    steps:
+      - name: Install dependencies
+        run: mvn install -DskipTests
+
+    # Крок 1: Запуск тестів
+    test:
+      name: Run Tests
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Set up JDK ${{ matrix.java-version }}
+          uses: actions/setup-java@v1
+          with:
+            java-version: ${{ matrix.java-version }}
+
+        - name: Run tests
+          env:
+            SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cs7fgfjtq21c73c5n7ag-a.oregon-postgres.render.com:5432/my_notes_v115
+            SPRING_DATASOURCE_USERNAME: ${{ secrets.DB_USERNAME }}
+            SPRING_DATASOURCE_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          run: mvn test
+
+    # Крок 2: Запуск лінтера для стилістичної перевірки
+    lint:
+      name: Lint Code
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Run linter
+          run: |
+            # У випадку використання лінтера на Java, наприклад, Checkstyle
+            mvn checkstyle:check
+
+    # Ось так ви паралельно запускаєте два кроки: тести та лінтер

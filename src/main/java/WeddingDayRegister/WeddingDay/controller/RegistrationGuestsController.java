@@ -2,7 +2,6 @@ package WeddingDayRegister.WeddingDay.controller;
 
 import WeddingDayRegister.WeddingDay.model.RSVPForm;
 import WeddingDayRegister.WeddingDay.service.RsvpDao;
-import ch.qos.logback.core.model.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

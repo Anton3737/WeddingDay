@@ -2,82 +2,108 @@ package WeddingDayRegister.WeddingDay;
 
 import WeddingDayRegister.WeddingDay.model.RSVPForm;
 import WeddingDayRegister.WeddingDay.service.RsvpDao;
-import WeddingDayRegister.WeddingDay.controller.RegistrationGuestsController; // Імпортуємо контролер
+import WeddingDayRegister.WeddingDay.controller.RegistrationGuestsController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.servlet.ModelAndView;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.ArrayList;
 
 public class RegistrationGuestsTests {
+    @InjectMocks
+    private RegistrationGuestsController controller;
 
     @Mock
     private RsvpDao rsvpDao;
 
-    @InjectMocks
-    private RegistrationGuestsController registrationGuestsController;
-
     @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
+    void setUp() {
+        MockitoAnnotations.openMocks(this); // Ініціалізуємо Mockito
     }
 
     @Test
-    public void testAddGuestSuccess() {
-        // Given
-        String name = "John";
-        String secondName = "Doe";
-        String presence = "yes";
-        List<String> guest = new ArrayList<>(List.of("Jane"));
-        List<String> beverage = new ArrayList<>(List.of("Water"));
+    void addGuest_ShouldAddNewGuest() {
+        // Створюємо новий гість з даними
+        RSVPForm newGuest = new RSVPForm();
+        newGuest.setName("John");
+        newGuest.setSecondName("Doe");
+        newGuest.setPresence("Yes");
+        newGuest.setGuest(Arrays.asList("Alice", "Bob"));
+        newGuest.setBeverage(Arrays.asList("Water", "Wine"));
 
-        doNothing().when(rsvpDao).addGuest(any(RSVPForm.class)); // Мокаємо на будь-який RSVPForm
+        // Налаштовуємо поведінку для dao
+        when(rsvpDao.addGuest(any(RSVPForm.class))).thenReturn(newGuest);
 
-        // When
-        String result = registrationGuestsController.addGuest(name, secondName, presence, guest, beverage);
+        // Викликаємо метод контролера для додавання гостя
+        String result = controller.addGuest("John", "Doe", "Yes", Arrays.asList("Alice", "Bob"), Arrays.asList("Water", "Wine"));
 
-        // Then
+        // Перевіряємо, що ми перенаправляємо на головну сторінку
         assertEquals("redirect:/", result);
-        verify(rsvpDao).addGuest(any(RSVPForm.class));  // Перевіряємо виклик з будь-яким RSVPForm
+        verify(rsvpDao, times(1)).addGuest(any(RSVPForm.class)); // Перевіряємо, що dao був викликаний один раз
     }
 
     @Test
-    public void testAddGuestMissingArguments() {
-        // Given
-        String name = null;
-        String secondName = "Doe";
-        String presence = "yes";
-        List<String> guest = new ArrayList<>(List.of("Jane"));
-        List<String> beverage = new ArrayList<>(List.of("Water"));
+    void getAllGuests_ShouldReturnModelAndView() {
+        // Створюємо список гостей
+        List<RSVPForm> guests = Arrays.asList(new RSVPForm(), new RSVPForm());
+        when(rsvpDao.findAllGuests()).thenReturn(guests); // Налаштовуємо поведінку dao
 
-        // When & Then
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                registrationGuestsController.addGuest(name, secondName, presence, guest, beverage)
-        );
-        assertEquals("No all arguments added", exception.getMessage());
+        // Викликаємо метод контролера для отримання всіх гостей
+        ModelAndView modelAndView = controller.getAllGuests();
+
+        // Перевіряємо, що модель і вид не пусті
+        assertNotNull(modelAndView);
+        assertEquals("guestList", modelAndView.getViewName()); // Перевіряємо, що відображається правильний вид
+        assertEquals(guests, modelAndView.getModel().get("guestsList")); // Перевіряємо, що список гостей правильно передається в модель
     }
 
     @Test
-    public void testAddGuestThrowsRuntimeException() {
-        // Given
-        String name = "John";
-        String secondName = "Doe";
-        String presence = "yes";
-        List<String> guest = new ArrayList<>(List.of("Jane"));
-        List<String> beverage = new ArrayList<>(List.of("Water"));
+    void updateGuest_ShouldUpdateExistingGuest() {
+        // Створюємо існуючого гостя для оновлення
+        RSVPForm existingGuest = new RSVPForm();
+        existingGuest.setId(1L);
+        existingGuest.setName("John");
+        existingGuest.setSecondName("Doe");
 
-        when(rsvpDao.addGuest(any(RSVPForm.class))).thenThrow(new RuntimeException("Database error"));
+        // Налаштовуємо поведінку dao для отримання та оновлення гостя
+        when(rsvpDao.getById(1L)).thenReturn(existingGuest);
+        when(rsvpDao.update(1L, existingGuest)).thenReturn(existingGuest);
 
-        // When & Then
-        RuntimeException exception = assertThrows(RuntimeException.class, () ->
-                registrationGuestsController.addGuest(name, secondName, presence, guest, beverage)
-        );
-        assertTrue(exception.getMessage().contains("Failed to process data"));
+        // Викликаємо метод контролера для оновлення даних гостя
+        String result = controller.updateGuest(1L, "Jane", "Doe", "Yes", Arrays.asList(), Arrays.asList());
+
+        // Перевіряємо, що перенаправляємо на список гостей
+        assertEquals("redirect:/guests/list", result);
+        verify(rsvpDao, times(1)).update(1L, existingGuest); // Перевіряємо, що dao був викликаний один раз
+    }
+
+    @Test
+    void deleteGuest_ShouldDeleteExistingGuest() {
+        // Створюємо існуючого гостя для видалення
+        RSVPForm existingGuest = new RSVPForm();
+        existingGuest.setId(1L);
+
+        // Налаштовуємо поведінку dao для отримання гостя
+        when(rsvpDao.getById(1L)).thenReturn(existingGuest);
+
+        // Викликаємо метод контролера для видалення гостя
+        String result = controller.deleteGuest(1L);
+
+        // Перевіряємо, що перенаправляємо на список гостей
+        assertEquals("redirect:/guests/list", result);
+        verify(rsvpDao, times(1)).deleteById(1L); // Перевіряємо, що dao був викликаний один раз
     }
 }
