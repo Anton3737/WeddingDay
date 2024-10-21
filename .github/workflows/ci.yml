@@ -21,6 +21,7 @@ jobs:
       - name: Set up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v3
         with:
+          distribution: 'temurin'  # Вказати дистрибутив Java (temurin - OpenJDK від Eclipse)
           java-version: ${{ matrix.java-version }}
 
       # Паралельний крок 1: Запуск тестів
@@ -39,6 +40,7 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
+          distribution: 'temurin'  # Вказати дистрибутив Java
           java-version: 17
 
       # Паралельний крок 2: Запуск лінтера (наприклад, Spotless або Checkstyle)
