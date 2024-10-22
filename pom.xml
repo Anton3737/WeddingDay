@@ -84,7 +84,7 @@
 				<configuration>
 					<java>
 						<eclipse>
-							<version>2021-06</version> <!-- Ви можете вказати іншу версію, якщо потрібно -->
+							<version>2023-06</version> <!-- Актуалізована версія Eclipse JDT -->
 						</eclipse>
 					</java>
 				</configuration>
