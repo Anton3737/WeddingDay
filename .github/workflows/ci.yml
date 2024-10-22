@@ -17,9 +17,9 @@ jobs:
         ports:
           - 5432:5432
         env:
-          POSTGRES_USER: postgresql
-          POSTGRES_PASSWORD: N4NGC7kxXmCO8LXSlYbGK4lApRt8URGi
-          POSTGRES_DB: my_notes_v115
+          POSTGRES_USER: anton
+          POSTGRES_PASSWORD: xtzeCEGBFvcPwKtUXxI14QUPuIuBAAb6
+          POSTGRES_DB: weddingday_1
         options: >-
           --health-cmd="pg_isready -U postgresql"
           --health-interval=10s
@@ -42,7 +42,7 @@ jobs:
 
       - name: Run Tests
         env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cs7fgfjtq21c73c5n7ag-a.oregon-postgres.render.com:5432/my_notes_v115
-          SPRING_DATASOURCE_USERNAME: postgresql
-          SPRING_DATASOURCE_PASSWORD: N4NGC7kxXmCO8LXSlYbGK4lApRt8URGi
+          SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-csc13nhu0jms73efp1cg-a.oregon-postgres.render.com:5432/weddingday_1
+          SPRING_DATASOURCE_USERNAME: anton
+          SPRING_DATASOURCE_PASSWORD: xtzeCEGBFvcPwKtUXxI14QUPuIuBAAb6
         run: mvn test
