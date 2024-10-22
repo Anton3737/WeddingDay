@@ -15,13 +15,13 @@ jobs:
     steps:
       # Крок 1: Завантаження репозиторію
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3  # Оновлено до v3
 
       # Крок 2: Встановлення JDK
       - name: Set up JDK ${{ matrix.java-version }}
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v3  # Оновлено до v3
         with:
-          distribution: 'temurin'  # Вказати дистрибутив Java (temurin - OpenJDK від Eclipse)
+          distribution: 'temurin'  # Вказати дистрибутив Java (Temurin для OpenJDK)
           java-version: ${{ matrix.java-version }}
 
       # Паралельний крок 1: Запуск тестів
@@ -34,11 +34,11 @@ jobs:
     steps:
       # Крок 1: Завантаження репозиторію
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3  # Оновлено до v3
 
       # Крок 2: Встановлення JDK
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v3  # Оновлено до v3
         with:
           distribution: 'temurin'  # Вказати дистрибутив Java
           java-version: 17
