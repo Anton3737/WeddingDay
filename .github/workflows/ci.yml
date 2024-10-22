@@ -2,52 +2,52 @@ name: CI
 
 on:
   push:
-    branches: [master]  # Запуск пайплайна при пуші в гілку master
+    branches: [master]
   pull_request:
-    branches: [master]  # Запуск пайплайна при створенні pull request в гілку master
+    branches: [master]
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest  # Вибір середовища для виконання (остання версія Ubuntu)
+    runs-on: ubuntu-latest
 
     services:
       postgres:
-        image: postgres:latest  # Використання останньої версії образу PostgreSQL
+        image: postgres:latest
         ports:
-          - 5432:5432  # Відкриття порту для підключення до бази даних
+          - 5432:5432
         env:
-          POSTGRES_USER: anton  # Ім'я користувача для PostgreSQL
-          POSTGRES_PASSWORD: xtzeCEGBFvcPwKtUXxI14QUPuIuBAAb6  # Пароль для користувача
-          POSTGRES_DB: weddingday_1  # Назва бази даних
+          POSTGRES_USER: anton
+          POSTGRES_PASSWORD: xtzeCEGBFvcPwKtUXxI14QUPuIuBAAb6
+          POSTGRES_DB: weddingday_1
         options: >-
-          --health-cmd="pg_isready -U anton"  # Команда для перевірки стану бази даних
-          --health-interval=10s  # Інтервал перевірки стану
-          --health-timeout=5s  # Час очікування на відповідь
-          --health-retries=5  # Кількість спроб перевірки
+          --health-cmd="pg_isready -U anton"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2  # Клонування репозиторію
+        uses: actions/checkout@v2
 
       - name: Set up JDK
-        uses: actions/setup-java@v2  # Налаштування JDK
+        uses: actions/setup-java@v2
         with:
-          java-version: '17'  # Вказівка версії Java
-          distribution: 'temurin'  # Використання Temurin як дистрибутиву
-          cache: 'maven'  # Кешування залежностей Maven
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
 
       - name: Build with Maven
-        run: mvn clean install  # Запуск збірки проекту за допомогою Maven
+        run: mvn clean install
 
       - name: Run Tests
         env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-csc13nhu0jms73efp1cg-a.oregon-postgres.render.com:5432/weddingday_1  # URL для підключення до бази даних
-          SPRING_DATASOURCE_USERNAME: anton  # Ім'я користувача для бази даних
-          SPRING_DATASOURCE_PASSWORD: xtzeCEGBFvcPwKtUXxI14QUPuIuBAAb6  # Пароль для підключення до бази даних
-          SPRING_FLYWAY_ENABLED: false  # Вимкнення Flyway для міграцій
-        run: mvn test  # Запуск тестів проекту
+          SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-csc13nhu0jms73efp1cg-a.oregon-postgres.render.com:5432/weddingday_1
+          SPRING_DATASOURCE_USERNAME: anton
+          SPRING_DATASOURCE_PASSWORD: xtzeCEGBFvcPwKtUXxI14QUPuIuBAAb6
+          SPRING_FLYWAY_ENABLED: false
+        run: mvn test
 
       - name: Simulate Deployment
-        if: ${{ success() }}  # Цей крок виконується лише якщо попередні кроки завершилися успішно
-        run: echo "Deployed"  # Виведення повідомлення "Deployed" в консоль
+        if: ${{ success() }}  # Цей крок виконується лише якщо попередні кроки успішні
+        run: echo "Deployed"
