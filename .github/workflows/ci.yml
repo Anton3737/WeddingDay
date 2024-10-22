@@ -15,14 +15,24 @@ jobs:
     steps:
       # Крок 1: Завантаження репозиторію
       - name: Checkout repository
-        uses: actions/checkout@v3  # Оновлено до v3
+        uses: actions/checkout@v3
 
-      # Крок 2: Встановлення JDK
-      - name: Set up JDK ${{ matrix.java-version }}
-        uses: actions/setup-java@v3  # Оновлено до v3
+      # Крок 2: Встановлення JDK 17
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'  # Вказати дистрибутив Java (Temurin для OpenJDK)
-          java-version: ${{ matrix.java-version }}
+          java-version: 17
+          distribution: 'temurin'
+
+      # Крок 3: Запуск лінтера (Spotless для перевірки стилістичних помилок)
+      - name: Run Linter (Spotless)
+        run: ./mvnw spotless:check
+        continue-on-error: false  # При помилці форматування зупиняється
+
+      # Крок 4: Автоматичне виправлення форматування, якщо є помилки
+      - name: Apply Formatting Fixes (Spotless)
+        run: ./mvnw spotless:apply
+        continue-on-error: false
 
       # Паралельний крок 1: Запуск тестів
       - name: Run Tests
