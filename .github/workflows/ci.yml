@@ -43,7 +43,7 @@ jobs:
 
       - name: Run Tests
         env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/my_notes_v115
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/my_notes_v116
           SPRING_DATASOURCE_USERNAME: postgresql
-          SPRING_DATASOURCE_PASSWORD: N4NGC7kxXmCO8LXSlYbGK4lApRt8URGi
+          SPRING_DATASOURCE_PASSWORD: love
         run: mvn test
