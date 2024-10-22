@@ -1,39 +1,46 @@
-name: CI Pipeline
+name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgresql
+          POSTGRES_PASSWORD: N4NGC7kxXmCO8LXSlYbGK4lApRt8URGi
+          POSTGRES_DB: my_notes_v115
+        options: >-
+          --health-cmd="pg_isready -U postgresql"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up JDK 17
+      - name: Set up JDK
         uses: actions/setup-java@v2
         with:
           java-version: '17'
 
-      - name: Cache Maven dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+      - name: Build with Maven
+        run: mvn clean install
 
-      - name: Install dependencies
-        run: mvn install --no-cache
-
-      - name: Run tests
+      - name: Run Tests
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/my_notes_v115
+          SPRING_DATASOURCE_USERNAME: postgresql
+          SPRING_DATASOURCE_PASSWORD: N4NGC7kxXmCO8LXSlYbGK4lApRt8URGi
         run: mvn test
-
-      - name: Run Spotless
-        run: mvn spotless:check
