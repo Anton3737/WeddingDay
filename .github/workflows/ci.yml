@@ -45,4 +45,6 @@ jobs:
           SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-csc13nhu0jms73efp1cg-a.oregon-postgres.render.com:5432/weddingday_1
           SPRING_DATASOURCE_USERNAME: anton
           SPRING_DATASOURCE_PASSWORD: xtzeCEGBFvcPwKtUXxI14QUPuIuBAAb6
+          SPRING_FLYWAY_ENABLED: false  # Додаємо цю змінну для відключення Flyway
+
         run: mvn test
