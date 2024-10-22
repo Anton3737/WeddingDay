@@ -33,17 +33,16 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-            java-version: '17'
-            distribution: 'temurin'  # Додайте цю стрічку
-            cache: 'maven'
-
+          java-version: '17'
+          distribution: 'temurin'  # Це добре
+          cache: 'maven'
 
       - name: Build with Maven
         run: mvn clean install
 
       - name: Run Tests
         env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/my_notes_v116
+          SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cs7fgfjtq21c73c5n7ag-a.oregon-postgres.render.com:5432/my_notes_v115
           SPRING_DATASOURCE_USERNAME: postgresql
-          SPRING_DATASOURCE_PASSWORD: love
+          SPRING_DATASOURCE_PASSWORD: N4NGC7kxXmCO8LXSlYbGK4lApRt8URGi
         run: mvn test
