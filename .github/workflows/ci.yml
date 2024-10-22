@@ -46,5 +46,8 @@ jobs:
           SPRING_DATASOURCE_USERNAME: anton
           SPRING_DATASOURCE_PASSWORD: xtzeCEGBFvcPwKtUXxI14QUPuIuBAAb6
           SPRING_FLYWAY_ENABLED: false  # Додаємо цю змінну для відключення Flyway
-
         run: mvn test
+
+      # Додати перевірку стилю коду (опційно)
+      - name: Run Checkstyle
+        run: mvn checkstyle:check
