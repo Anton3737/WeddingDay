@@ -5,7 +5,6 @@
     <module name="TreeWalker">
         <module name="WhitespaceAround"/>
         <module name="Indentation"/>
-        <module name="FileTabCharacter"/>
         <module name="MagicNumber">
             <property name="ignoreNumbers" value="0,1,-1"/>
         </module>
@@ -14,4 +13,6 @@
         </module>
         <!-- Додайте інші модулі за потребою -->
     </module>
+    <!-- Винесіть FileTabCharacter з TreeWalker -->
+    <module name="FileTabCharacter"/>
 </module>
