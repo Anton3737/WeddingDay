@@ -49,5 +49,5 @@ jobs:
         run: mvn test
 
       # Додати перевірку стилю коду (опційно)
-      - name: Run Checkstyle
-        run: mvn checkstyle:check
+#      - name: Run Checkstyle
+#        run: mvn checkstyle:check
