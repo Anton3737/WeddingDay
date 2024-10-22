@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.util.List;
-
+// Сутність
 @Entity
 @Table(name = "wedding_list")
 public class RSVPForm {
