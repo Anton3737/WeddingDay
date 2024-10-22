@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -76,12 +77,14 @@
 				</configuration>
 			</plugin>
 
-			<!-- Compiler Plugin to allow access to internal JDK classes -->
+			<!-- Compiler Plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
+					<source>${java.version}</source> <!-- Вказуємо версію Java -->
+					<target>${java.version}</target> <!-- Версія JVM для рунтайму -->
 					<compilerArgs>
 						<arg>--add-exports</arg>
 						<arg>jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>
@@ -90,8 +93,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
 </project>
-
-
