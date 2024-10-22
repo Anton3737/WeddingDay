@@ -3,12 +3,14 @@
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.3.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+
 	<groupId>WeddingDayRegister</groupId>
 	<artifactId>WeddingDay</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -17,51 +19,74 @@
 
 	<properties>
 		<java.version>17</java.version>
+		<maven.compiler.plugin.version>3.10.1</maven.compiler.plugin.version> <!-- Зручно для керування версією плагіна -->
+		<spotless.version>2.17.5</spotless.version> <!-- Зручно для управління версією плагіна Spotless -->
 	</properties>
 
 	<dependencies>
+		<!-- Spring Data JPA для роботи з базою даних -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+
+		<!-- Thymeleaf для генерації HTML сторінок -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+
+		<!-- Web Starter для створення REST API -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
+		<!-- PostgreSQL для підключення до бази даних -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+		<!-- Flyway для міграцій бази даних -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
+
+		<!-- Тестування -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.flywaydb</groupId>
-			<artifactId>flyway-core</artifactId>
-			<version>9.5.0</version>
-		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
-			<!-- Spring Boot Plugin -->
+			<!-- Spring Boot Plugin для запуску проекту -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
-			<!-- Spotless Plugin for Linting -->
+			<!-- Maven Compiler Plugin для компіляції проекту -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.plugin.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+
+			<!-- Spotless Plugin для автоформатування коду -->
 			<plugin>
 				<groupId>com.diffplug.spotless</groupId>
 				<artifactId>spotless-maven-plugin</artifactId>
-				<version>2.17.5</version>
+				<version>${spotless.version}</version>
 				<executions>
 					<execution>
 						<goals>
@@ -74,17 +99,6 @@
 					<java>
 						<googleJavaFormat/>
 					</java>
-				</configuration>
-			</plugin>
-
-			<!-- Compiler Plugin -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.10.1</version> <!-- Оновлено до останньої версії -->
-				<configuration>
-					<source>${java.version}</source> <!-- Вказуємо версію Java -->
-					<target>${java.version}</target> <!-- Версія JVM для рунтайму -->
 				</configuration>
 			</plugin>
 		</plugins>
