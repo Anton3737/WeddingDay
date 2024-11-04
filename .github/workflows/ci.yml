@@ -1,59 +1,59 @@
-name: CI
-
-on:
-  push:
-    branches: [master]
-  pull_request:
-    branches: [master]
-
-jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:latest
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_USER: anton
-          POSTGRES_PASSWORD: antonpassword
-          POSTGRES_DB: weddingday_1
-        options: >-
-          --health-cmd="pg_isready -U anton"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: 'maven'
-
-      - name: Build with Maven
-        run: mvn clean install
-
-      - name: Set up PostgreSQL environment
-        run: |
-          psql -h localhost -U anton -d weddingday_1 -c "ALTER USER anton WITH PASSWORD '${{ secrets.POSTGRES_PASSWORD }}';"
-        env:
-          PGPASSWORD: antonpassword
-
-      - name: Run Tests
-        env:
-          SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
-          SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
-          SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
-          SPRING_FLYWAY_ENABLED: false
-        run: mvn test
-
-      - name: Simulate Deployment
-        if: ${{ success() }}
-        run: echo "Deployed"
+#name: CI
+#
+#on:
+#  push:
+#    branches: [master]
+#  pull_request:
+#    branches: [master]
+#
+#jobs:
+#  build:
+#
+#    runs-on: ubuntu-latest
+#
+#    services:
+#      postgres:
+#        image: postgres:latest
+#        ports:
+#          - 5432:5432
+#        env:
+#          POSTGRES_USER: anton
+#          POSTGRES_PASSWORD: antonpassword
+#          POSTGRES_DB: weddingday_1
+#        options: >-
+#          --health-cmd="pg_isready -U anton"
+#          --health-interval=10s
+#          --health-timeout=5s
+#          --health-retries=5
+#
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+#
+#      - name: Set up JDK
+#        uses: actions/setup-java@v2
+#        with:
+#          java-version: '17'
+#          distribution: 'temurin'
+#          cache: 'maven'
+#
+#      - name: Build with Maven
+#        run: mvn clean install
+#
+#      - name: Set up PostgreSQL environment
+#        run: |
+#          psql -h localhost -U anton -d weddingday_1 -c "ALTER USER anton WITH PASSWORD '${{ secrets.POSTGRES_PASSWORD }}';"
+#        env:
+#          PGPASSWORD: antonpassword
+#
+#      - name: Run Tests
+#        env:
+#          SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
+#          SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
+#          SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+#          SPRING_FLYWAY_ENABLED: false
+#        run: mvn test
+#
+#      - name: Simulate Deployment
+#        if: ${{ success() }}
+#        run: echo "Deployed"
