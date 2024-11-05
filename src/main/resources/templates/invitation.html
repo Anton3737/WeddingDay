@@ -170,27 +170,29 @@
         </div>
     </div>
     <script>
-        const weddingDate = new Date("2024-10-20T15:00:00").getTime();
-        const countdownElement = document.getElementById("time");
+       <script>
+        function updateCountdown() {
+            const targetDate = new Date('2024-11-20T00:00:00');
+            const currentDate = new Date();
+            const timeDifference = targetDate - currentDate;
 
-        const countdownInterval = setInterval(() => {
-            const now = new Date().getTime();
-            const distance = weddingDate - now;
-
-            // Розрахунок годин, хвилин та секунд
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            // Відображення зворотного відліку
-            countdownElement.innerHTML = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-
-            // Якщо час вийшов
-            if (distance < 0) {
-                clearInterval(countdownInterval);
-                countdownElement.innerHTML = "Час вийшов!";
+            if (timeDifference <= 0) {
+                document.getElementById('time').innerText = "00:00:00";
+                clearInterval(interval);
+                return;
             }
-        }, 1000);
+
+            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            document.getElementById('time').innerText =
+                `${days} дн. ${hours} год. ${minutes} хв. ${seconds} сек.`;
+        }
+
+        const interval = setInterval(updateCountdown, 1000);
+    </script>
     </script>
 </body>
 
