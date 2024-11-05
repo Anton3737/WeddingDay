@@ -48,9 +48,9 @@ jobs:
 
       - name: Run Tests
         env:
-          SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
-          SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
-          SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+          SPRING_DATASOURCE_URL: postgresql://anton:CqvmkdgZ8fWd7bWri0cuV6ucFVkZJbYI@dpg-cskgs4ij1k6c73c3h3hg-a.oregon-postgres.render.com/weddingday_2
+          SPRING_DATASOURCE_USERNAME: anton
+          SPRING_DATASOURCE_PASSWORD: CqvmkdgZ8fWd7bWri0cuV6ucFVkZJbYI
           SPRING_FLYWAY_ENABLED: false
         run: mvn test
 
