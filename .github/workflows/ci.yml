@@ -42,7 +42,7 @@ jobs:
 
       - name: Set up PostgreSQL environment
         run: |
-          psql -h localhost -U anton -d weddingday_1 -c "ALTER USER anton WITH PASSWORD '${{ secrets.POSTGRES_PASSWORD }}';"
+          psql -h localhost -U anton -d weddingday_2 -c "ALTER USER anton WITH PASSWORD '${{ secrets.POSTGRES_PASSWORD }}';"
         env:
           PGPASSWORD: antonpassword
 
