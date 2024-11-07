@@ -415,7 +415,7 @@
 
                 </div>
 
-                <button class="sendBtn hdnbtn" type="submit">Відправити</button>
+                <button class="sendBtn" type="submit">Відправити</button>
 
             </form>
 
@@ -433,30 +433,33 @@
         </div>
     </div>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Отримуємо елемент select та всі відповідні блоки
-            const presenceSelect = document.querySelector("select[name='presence']");
-            const guestFields = document.querySelectorAll(".checkbox-group, .radio-wrapper, .checkbox-wrapper-12", .hdnbtn);
+       document.addEventListener("DOMContentLoaded", function() {
+    // Отримуємо елемент select та всі відповідні блоки
+    const presenceSelect = document.querySelector("select[name='presence']");
+    const guestFields = document.querySelectorAll(".checkbox-group, .radio-wrapper, .checkbox-wrapper-12");
+    const sendBtn = document.querySelector(".sendBtn");
 
-            // Функція для оновлення видимості полів
-            function toggleFields() {
-                if (presenceSelect.value === "Так, я прийду!") {
-                    guestFields.forEach(function(field) {
-                        field.classList.remove("hidden"); // Показуємо поля
-                    });
-                } else if (presenceSelect.value === "На жаль, я не зможу прийти.") {
-                    guestFields.forEach(function(field) {
-                        field.classList.add("hidden"); // Приховуємо поля
-                    });
-                }
-            }
+    // Функція для оновлення видимості полів
+    function toggleFields() {
+        if (presenceSelect.value === "Так, я прийду!") {
+            guestFields.forEach(function(field) {
+                field.classList.remove("hidden"); // Показуємо поля
+            });
+            sendBtn.classList.remove("hidden"); // Показуємо кнопку
+        } else if (presenceSelect.value === "На жаль, я не зможу прийти.") {
+            guestFields.forEach(function(field) {
+                field.classList.add("hidden"); // Приховуємо поля
+            });
+            sendBtn.classList.add("hidden"); // Приховуємо кнопку
+        }
+    }
 
-            // Ініціалізуємо стан при завантаженні сторінки
-            toggleFields();
+    // Ініціалізація стану при завантаженні сторінки
+    toggleFields();
 
-            // Додаємо слухача подій на зміну вибору
-            presenceSelect.addEventListener("change", toggleFields);
-        });
+    // Оновлення стану при зміні вибору
+    presenceSelect.addEventListener("change", toggleFields);
+});
 
         document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
             checkbox.addEventListener('change', function() {
