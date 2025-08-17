@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Запрошення на Весілля</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+        html {
+            background: fixed;
+            background-image: linear-gradient(to right bottom, #e1b0cc, #e3a8c9, #e49fc6, #e696c3, #e78dc0, #de93d2, #d19ae2, #c0a2f0, #96baff, #73cdff, #6fdcf6, #8ae7e4);
+        }
+        
+        body {
+            font-family: "Nunito", sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            color: rgb(255, 204, 0);
+            max-width: 800px;
+            margin: 46px auto;
+            padding: 20px;
+            background-color: rgba(0, 38, 255, 0.295);
+            border-radius: 30px;
+        }
+        
+        .header {
+            text-align: center;
+        }
+        
+        .content {
+            margin: 20px 0;
+        }
+        
+        .section {
+            margin-bottom: 20px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .countdown {
+            text-align: center;
+            font-size: 1.5em;
+            margin-top: 20px;
+            color: #ff5733;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .inpPlace {
+            text-align: center;
+            margin-top: 10px;
+            width: 300px;
+            height: 30px;
+            border-radius: 10px;
+            border: none;
+            text-decoration: none;
+        }
+        
+        .sendBtn {
+            background-color: #cecc4e;
+            text-align: center;
+            width: 150px;
+            height: 30px;
+            border-radius: 50px;
+            transition: width 0.3s ease-in-out, filter 0.3s ease-in-out;
+            border: none;
+            text-decoration: none;
+            margin-top: 30px;
+        }
+        
+        .sendBtn:hover {
+            width: 170px;
+            background-color: #43d367;
+        }
+        
+        label {
+            border: inherit;
+        }
+        
+        .showall {
+            text-decoration: none;
+            color: white;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .checkbox-group,
+        .radio-wrapper,
+        .checkbox-wrapper-12 {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-wrapper-12 {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+        
+        .checkbox-wrapper-12 .cbx {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        span {
+            margin-left: 10px;
+        }
+        
+        .checkbox-wrapper-12 input[type="checkbox"] {
+            appearance: none;
+            cursor: pointer;
+            margin: 0;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #bfbfc0;
+            border-radius: 50%;
+            position: relative;
+            z-index: 2;
+            background: transparent;
+        }
+        
+        .checkbox-wrapper-12 input[type="checkbox"]:focus {
+            outline: none;
+        }
+        
+        .checkbox-wrapper-12 .cbx label {
+            width: 24px;
+            height: 24px;
+            background: none;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            filter: url("#goo-12");
+            pointer-events: none;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .checkbox-wrapper-12 .cbx svg {
+            position: absolute;
+            top: 5px;
+            left: 4px;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .checkbox-wrapper-12 .cbx svg path {
+            stroke: #fff;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 19;
+            stroke-dashoffset: 19;
+            transition: stroke-dashoffset 0.3s ease;
+            transition-delay: 0.2s;
+        }
+        
+        .checkbox-wrapper-12 input[type="checkbox"]:checked+label {
+            animation: splash-12 0.6s ease forwards;
+        }
+        
+        .checkbox-wrapper-12 input[type="checkbox"]:checked+label+svg path {
+            stroke-dashoffset: 0;
+        }
+        
+        @keyframes splash-12 {
+            40% {
+                background: #866efb;
+                box-shadow: 0 -18px 0 -8px #866efb, 16px -8px 0 -8px #866efb, 16px 8px 0 -8px #866efb, 0 18px 0 -8px #866efb, -16px 8px 0 -8px #866efb, -16px -8px 0 -8px #866efb;
+            }
+            100% {
+                background: #866efb;
+                box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+            }
+        }
+        
+        .radio-wrapper {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        
+        .rbx {
+            position: relative;
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+        
+        .rbx input[type="radio"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #bfbfc0;
+            border-radius: 50%;
+            cursor: pointer;
+            margin: 0;
+            z-index: 1;
+        }
+        
+        .rbx input[type="radio"]:checked+label {
+            background-color: #866efb;
+            box-shadow: 0 0 0 4px #fff;
+        }
+        
+        .rbx input[type="radio"]:focus {
+            outline: none;
+        }
+        
+        .rbx label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: transparent;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .rbx svg {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        .rbx input[type="radio"]:checked+label+svg path {
+            stroke: #fff;
+            stroke-width: 2;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Запрошення на весілля</h1>
+            <p>Антон та Любов</p>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <h2>Дорогі друзі!</h2>
+                <p>Ми з великим нетерпінням і радістю запрошуємо вас на найважливіший день у нашому житті — наше весілля, яке відбудеться <strong>20 вересня 2025 року</strong>.</p>
+                <p>Святкування ми проведемо в атмосфері любові та радості за адресою: <span class="highlight">вул. Київська, 5, Київ</span>.
+                </p>
+                <p>Урочистості розпочнуться о <span class="highlight">15:00</span>, і ми будемо раді святкувати цей чудовий день разом з вами до пізньої ночі.</p>
+                <p>Приходьте, щоб поділитися з нами цими неповторними моментами щастя!</p>
+                <div class="footer">
+                <div class="footer">
+                    <p>З найкращими побажаннями, <strong>молодята</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section rsvp-form">
+            <h3>Підтвердження присутності</h3>
+
+            <form th:action="@{/guests/addGuest}" method="post">
+                <input type="text" class="inpPlace" name="name" placeholder="Ваше ім'я" required>
+                <input type="text" class="inpPlace" name="secondName" placeholder="Ваше прізвище" required><br>
+
+                <label>Чи можемо ми очікувати вашої присутності?</label><br>
+                <select name="presence" required>
+                <option value="Так, я прийду!">Так, я прийду!</option>
+                <option value="На жаль, я не зможу прийти.">На жаль, я не зможу прийти.</option>
+            </select><br>
+
+                <label>Чи плануєте ви брати додаткового гостя?</label>
+                <div class="checkbox-group">
+                    <!--                <label><input type="checkbox" name="guest" value="Я буду один / одна"> Я буду один</label>-->
+                    <!--                <label><input type="checkbox" name="guest" value="Я буду з гостем"> Я буду з гостем</label>-->
+                    <!--                <label><input type="checkbox" name="guest" value="Я буду з кількома гостями"> Я буду з кількома гостями</label>-->
+                    <div class="radio-wrapper">
+                        <div class="rbx">
+                            <input id="rbx-1" type="radio" name="guest" value="Я буду один / одна" />
+                            <label for="rbx-1"></label>
+                            <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
+                            <path d="M2 8.36364L6.23077 12L13 2"></path>
+                        </svg>
+                        </div>
+                        <span>Я буду один</span>
+                    </div>
+
+                    <div class="radio-wrapper">
+                        <div class="rbx">
+                            <input id="rbx-2" type="radio" name="guest" value="Я буду з гостем" />
+                            <label for="rbx-2"></label>
+                            <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
+                            <path d="M2 8.36364L6.23077 12L13 2"></path>
+                        </svg>
+                        </div>
+                        <span>Я буду з гостем</span>
+                    </div>
+
+                    <div class="radio-wrapper">
+                        <div class="rbx">
+                            <input id="rbx-3" type="radio" name="guest" value="Я буду з кількома гостями" />
+                            <label for="rbx-3"></label>
+                            <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
+                            <path d="M2 8.36364L6.23077 12L13 2"></path>
+                        </svg>
+                        </div>
+                        <span>Я буду з кількома гостями</span>
+                    </div>
+
+                </div>
+
+                <label class="alco">Будь ласка, оберіть ваш улюблений напій для весільного прийому *</label>
+                <div class="checkbox-group">
+                    <!--                    <label><input type="checkbox" name="beverage" value="Червоне вино"> Червоне вино</label>-->
+                    <!--                    <label><input type="checkbox" name="beverage" value="Біле вино"> Біле вино</label>-->
+                    <!--                    <label><input type="checkbox" name="beverage" value="Шампанське"> Шампанське</label>-->
+                    <!--                    <label><input type="checkbox" name="beverage" value="Горілка"> Горілка</label>-->
+                    <!--                    <label><input type="checkbox" name="beverage" value="Віскі"> Віскі</label>-->
+                    <!--                    <label><input type="checkbox" name="beverage" value="Без алкоголю"> Без алкоголю</label>-->
+                    <div class="checkbox-wrapper-12">
+                        <div class="cbx">
+                            <input id="cbx-1" type="checkbox" name="beverage" value="Червоне вино" />
+                            <label for="cbx-1"></label>
+                            <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
+                            <path d="M2 8.36364L6.23077 12L13 2"></path>
+                        </svg>
+                        </div>
+                        <span>Червоне вино</span>
+                    </div>
+
+                    <div class="checkbox-wrapper-12">
+                        <div class="cbx">
+                            <input id="cbx-2" type="checkbox" name="beverage" value="Біле вино" />
+                            <label for="cbx-2"></label>
+                            <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
+                            <path d="M2 8.36364L6.23077 12L13 2"></path>
+                        </svg>
+                        </div>
+                        <span>Біле вино</span>
+                    </div>
+
+                    <div class="checkbox-wrapper-12">
+                        <div class="cbx">
+                            <input id="cbx-3" type="checkbox" name="beverage" value="Шампанське" />
+                            <label for="cbx-3"></label>
+                            <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
+                            <path d="M2 8.36364L6.23077 12L13 2"></path>
+                        </svg>
+                        </div>
+                        <span>Шампанське</span>
+                    </div>
+
+                    <div class="checkbox-wrapper-12">
+                        <div class="cbx">
+                            <input id="cbx-4" type="checkbox" name="beverage" value="Горілка" />
+                            <label for="cbx-4"></label>
+                            <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
+                            <path d="M2 8.36364L6.23077 12L13 2"></path>
+                        </svg>
+                        </div>
+                        <span>Коктейлі</span>
+                    </div>
+
+                    <div class="checkbox-wrapper-12">
+                        <div class="cbx">
+                            <input id="cbx-5" type="checkbox" name="beverage" value="Віскі" />
+                            <label for="cbx-5"></label>
+                            <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
+                            <path d="M2 8.36364L6.23077 12L13 2"></path>
+                        </svg>
+                        </div>
+                        <span>Віскі</span>
+                    </div>
+
+                    <div class="checkbox-wrapper-12">
+                        <div class="cbx">
+                            <input id="cbx-6" type="checkbox" name="beverage" value="Без алкоголю" />
+                            <label for="cbx-6"></label>
+                            <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
+                            <path d="M2 8.36364L6.23077 12L13 2"></path>
+                        </svg>
+                        </div>
+                        <span>Без алкоголю</span>
+                    </div>
+
+                </div>
+
+                <button class="sendBtn" type="submit">Відправити</button>
+
+            </form>
+
+        </div>
+        <div class="countdown" id="countdown">
+            До заходу залишилось: <span id="time">00:00:00</span>
+        </div>
+
+        <div class="footer">
+            <p>Контактний телефон: +380 67 123 4567</p>
+            <p>Email: AntonAndLyubov@example.com</p>
+        </div>
+        <div>
+            <a href="/guests/list" class="showall">All guests</a>
+        </div>
+    </div>
+    <script>
+       document.addEventListener("DOMContentLoaded", function() {
+    // Отримуємо елемент select та всі відповідні блоки
+    const presenceSelect = document.querySelector("select[name='presence']");
+    const guestFields = document.querySelectorAll(".checkbox-group, .radio-wrapper, .checkbox-wrapper-12");
+    const sendBtn = document.querySelector(".sendBtn");
+
+    // Функція для оновлення видимості полів
+    function toggleFields() {
+        if (presenceSelect.value === "Так, я прийду!") {
+            guestFields.forEach(function(field) {
+                field.classList.remove("hidden"); // Показуємо поля
+            });
+            sendBtn.classList.remove("hidden"); // Показуємо кнопку
+        } else if (presenceSelect.value === "На жаль, я не зможу прийти.") {
+            guestFields.forEach(function(field) {
+                field.classList.add("hidden"); // Приховуємо поля
+            });
+            sendBtn.classList.add("hidden"); // Приховуємо кнопку
+        }
+    }
+
+    // Ініціалізація стану при завантаженні сторінки
+    toggleFields();
+
+    // Оновлення стану при зміні вибору
+    presenceSelect.addEventListener("change", toggleFields);
+});
+
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                // Якщо вибрано "Без алкоголю" і він включений, знімаємо всі інші галочки
+                if (this.value === "Без алкоголю" && this.checked) {
+                    document.querySelectorAll('input[type="checkbox"]').forEach(otherCheckbox => {
+                        if (otherCheckbox !== this) {
+                            otherCheckbox.checked = false;
+                        }
+                    });
+                }
+            });
+        });
+
+
+
+        function updateCountdown() {
+            const targetDate = new Date('2025-09-20T00:00:00');
+            const currentDate = new Date();
+            const timeDifference = targetDate - currentDate;
+
+            if (timeDifference <= 0) {
+                document.getElementById('time').innerText = "00:00:00";
+                clearInterval(interval);
+                return;
+            }
+
+            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            document.getElementById('time').innerText =
+                `${days} дн. ${hours} год. ${minutes} хв. ${seconds} сек.`;
+        }
+
+        const interval = setInterval(updateCountdown, 1000);
+    </script>
+    </script>
+</body>
+
+</html>
